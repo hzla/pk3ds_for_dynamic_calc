@@ -1,15 +1,19 @@
-## How to export json for use in Dynamic Calc:
+# How to export json for use in Dynamic Calc:
 
-Step 1: Install Ruby https://rubyinstaller.org/
-
-
-Step 2: Install Node: https://nodejs.org/en/download
+### Step 1: 
+Install Ruby https://rubyinstaller.org/
 
 
-Step 3: Open your rom in the included pk3ds.exe
+### Step 2: 
+Install Node: https://nodejs.org/en/download
 
 
-Step 4: Export the following to the folder containing this file
+### Step 3: 
+Open your rom in the included pk3ds.exe
+
+
+### Step 4: 
+Export the following to the folder containing this file
 
 Lvl_up_moves.txt from learnset editor
 
@@ -21,12 +25,14 @@ Battles.txt from trainer editor
 
 Do not change any file names
 
-Step 5: Navigate to the folder containing pk3ds in terminal/command line and run `ruby parse.rb GEN` 
+### Step 5: 
+Navigate to the folder containing pk3ds in terminal/command line and run `ruby parse.rb GEN` 
 
 GEN is either `6` or `7`
 
 
-Step 6: copy paste contents of `output/npoint.json` to npoint.io 
+### Step 6: 
+copy paste contents of `output/npoint.json` to npoint.io 
 Save your json document and copy the document id in the url 
 ![image](https://github.com/hzla/pk3ds_for_dynamic_calc/assets/5680299/f8e9dac8-2737-49e9-bce6-914f2bf4a912)
 
