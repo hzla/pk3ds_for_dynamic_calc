@@ -1,4 +1,4 @@
-How to export json for use in Dynamic Calc:
+## How to export json for use in Dynamic Calc:
 
 Step 1: Install Ruby https://rubyinstaller.org/
 
