@@ -21,8 +21,19 @@ Battles.txt from trainer editor
 
 Do not change any file names
 
-Step 5: Naigate to the folder containing pk3ds in terminal/command line and run `ruby parse.rb GEN` 
+Step 5: Navigate to the folder containing pk3ds in terminal/command line and run `ruby parse.rb GEN` 
 
 GEN is either `6` or `7`
+
+
+Step 6: copy paste contents of `output/npoint.json` to npoint.io 
+Save your json document and copy the document id in the url 
+![image](https://github.com/hzla/pk3ds_for_dynamic_calc/assets/5680299/f8e9dac8-2737-49e9-bce6-914f2bf4a912)
+
+Your calc is now viewable at https://hzla.github.io/Dynamic-Calc/?data=COPY_DOCUMENT_ID_TO_HERE&dmgGen=GEN&gen=GEN
+
+replace GEN with 6 or 7 depending on your game
+
+replace COPY_DOCUMENT_ID_TO_HERE with your document id you copied earlier
 
 
