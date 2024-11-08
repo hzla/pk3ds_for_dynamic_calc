@@ -42,7 +42,7 @@ Save your json document and copy the document id in the url
 
 Your calc is now viewable at https://hzla.github.io/Dynamic-Calc/?data=COPY_DOCUMENT_ID_TO_HERE&dmgGen=GEN&gen=GEN
 
-replace GEN with 6 or 7 depending on your game
+replace GEN with 6 or 7 depending on your game. If you have added in moves from past your game's generation, set GEN to 8
 
 replace COPY_DOCUMENT_ID_TO_HERE with your document id you copied earlier
 
