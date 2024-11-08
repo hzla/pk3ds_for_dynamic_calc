@@ -271,7 +271,7 @@ File.write("./output/sets.json", JSON.pretty_generate(sets))
 if gen == 6 
 	p `node ./calcNature.js`
 
-	formatted_sets = JSON.parse(File.open("new_sets.json"){ |file| file.read})
+	formatted_sets = JSON.parse(File.open("./output/new_sets.json"){ |file| file.read})
 else
 	formatted_sets = sets
 end
