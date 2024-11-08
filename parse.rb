@@ -1,6 +1,6 @@
 require 'json'
 require_relative 'calc'
-require 'pry'
+
 
 
 stones = Calc.stones
