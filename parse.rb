@@ -27,6 +27,28 @@ upload copy paste the contents of npoint.json to npoint.io and link to dynamic c
 =end
 
 
+def readlines(file_path)
+	file_data = File.open(file_path,"rb:utf-16le"){ |file| file.readlines }
+
+	begin
+	  # Try reading with UTF-16LE encoding and handle BOM
+	  file_data = File.open(file_path, "rb:UTF-16LE:UTF-8") do |file|
+	    content = file.read
+	    # Remove BOM if present and normalize line endings
+	    content.gsub("\uFEFF", "").gsub("\r\n", "\n").split("\n")
+	  end
+	rescue
+	  # Fallback to binary read if the above fails
+	  file_data = File.open(file_path, "rb") do |file|
+	    content = file.read
+	    content.force_encoding('utf-16le')
+	    content.encode("UTF-8").gsub("\uFEFF", "").gsub("\r\n", "\n").split("\n")
+	  end
+	end
+
+	return file_data
+end
+
 
 
 
@@ -52,21 +74,23 @@ end
 ############ PARSE LEARNSETS ############ 
 p "parsing learnsets"
 
-learnsets = File.open("Lvl_up_moves.txt","rb:utf-16le"){ |file| file.readlines }
+learnsets = readlines("Lvl_up_moves.txt")
+
 learnset_data = {}
 learnsets.each_with_index do |line, i|
 	if i % 2 == 0
-		species = line.parse.strip
+		species = line.strip
 		if i == 0 
 			species = "Abomasnow"
 		end
 		species_learnset = []
-		moves = learnsets[i + 1].force_encoding('utf-16le').encode("UTF-8").strip[0..-2].split(" @ ")
+		p line
+		moves = learnsets[i + 1].strip[0..-2].split(" @ ")
 
 		moves.each do |move|
 			lvl_learned = move.split(" -- ")[0].to_i
 			move_name = move.split(" -- ")[1]
-			species_learnset << [lvl_learned, move_name.strip]
+			species_learnset << [lvl_learned, move_name]
 		end
 		learnset_data[species] = species_learnset
 	else
@@ -82,27 +106,27 @@ File.write("./output/learnsets.json", JSON.pretty_generate(learnset_data))
 
 p "parsing pokedex"
 
-mons = File.open("Mons.txt","rb:utf-16le"){ |file| file.readlines }
+mons = readlines("Mons.txt")
 mon_data = {}
 
 mons.each_with_index do |line, i|
 	if i % 7 == 0
-		species = line.parse.strip.parse_species_name(subs)
+		species = line.strip.parse_species_name(subs)
 
 		
 		mon_data[species] = {}
 		
-		base_stats = mons[i + 1].parse[12..-1].split(".")
+		base_stats = mons[i + 1][12..-1].split(".")
 		
 		mon_data[species]["bs"] = {}
 		["hp", "at", "df", "sa", "sd", "sp"].each_with_index do |stat, j|
 			mon_data[species]["bs"][stat] = base_stats[j].to_i
 		end
 
-		abilities = mons[i + 3].parse[11..-1].split(" | ")
+		abilities = mons[i + 3][11..-1].split(" | ")
 		mon_data[species]["abilities"] = abilities
 
-		types = mons[i + 4].parse[6..-1].split (' / ')
+		types = mons[i + 4][6..-1].split (' / ')
 		mon_data[species]["types"] = types
 		mon_data[species]["learnset_info"] = learnset_data[species]
 		mon_data[species]["id"] = i / 7 + 1
@@ -120,11 +144,11 @@ File.write("./output/mons.json", JSON.pretty_generate(mon_data))
 
 p "parsing moves"
 
-moves = File.open("Moves.txt","rb:utf-16le"){ |file| file.readlines }
+moves = readlines("Moves.txt")
 move_data = {}
 
 moves.each_with_index do |line, i|
-	move_info = line.parse.split( " | ")
+	move_info = line.split( " | ")
 	move_name = move_info[0]
 	if i == 0
 		move_name = "Pound"
@@ -152,7 +176,7 @@ p "parsing sets"
 encoding = gen == 6 ? "utf-16le" : "utf-8"
 
 
-trainers = File.open("Battles.txt", "rb:#{encoding}"){ |file| file.readlines }
+trainers = readlines("Battles.txt")
 sets = {}
 current_trainer = nil
 
@@ -165,8 +189,8 @@ trainer_counts = {}
 while i < trainers.length
 	line = trainers[i]
 
-	p line.parse(encoding)
-	current_trainer = line.parse(encoding).get_trainer_info gen
+	p line
+	current_trainer = line.get_trainer_info gen
 	p current_trainer
 	trainer_title = "#{current_trainer[:class_name]} #{current_trainer[:trainer_name]}".strip.gsub("[", "|").gsub("]","|")
 
@@ -186,35 +210,35 @@ while i < trainers.length
 	end
 
 	i += 1
-	num_pokemon = trainers[i].parse(encoding).to_i
+	num_pokemon = trainers[i].to_i
 	i += 1
 
 	
 	(0..num_pokemon - 1).each do |n|
-		species_name = trainers[i].parse(encoding)
+		species_name = trainers[i]
 		p trainers[i]
 		sets[species_name] ||= {}
 		i += 1
-		level = trainers[i].parse(encoding).to_i
+		level = trainers[i].to_i
 		i += 1
-		item = trainers[i].parse(encoding).strip
+		item = trainers[i].strip
 		i += 1
 		
 		if gen == 7 
-			nature = trainers[i].parse(encoding).strip
+			nature = trainers[i].strip
 			i += 1
 		end
 
-		ability = trainers[i].parse(encoding).split(" (")[0]
+		ability = trainers[i].split(" (")[0]
 		i += 1
-		moves = trainers[i].parse(encoding).split(" / ")
+		moves = trainers[i].split(" / ")
 		if moves == ["lvl up learnset"]
 			moves = get_lvl_up_learnset(learnset_data, species_name, level)
 		end
 		i += 1
 		
 		if gen == 6
-			ivs_raw = trainers[i].parse(encoding).to_i
+			ivs_raw = trainers[i].to_i
 			ivs_all = ivs_raw & 31
 			ivs = {"hp" => ivs_all,"at" => ivs_all,"df" => ivs_all,"sa" => ivs_all,"sd" => ivs_all,"sp" => ivs_all}
 			evs = {}
