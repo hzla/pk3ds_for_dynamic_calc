@@ -177,7 +177,7 @@ p "parsing sets"
 encoding = gen == 6 ? "utf-16le" : "utf-8"
 
 
-trainers = File.readlines("Battles.txt").map {|line| line.gsub("\r\n", "")}
+trainers = File.readlines("Battles.txt").map {|line| line.gsub("\r\n", "").gsub("\n", "")}
 sets = {}
 current_trainer = nil
 
