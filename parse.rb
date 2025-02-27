@@ -30,6 +30,7 @@ upload copy paste the contents of npoint.json to npoint.io and link to dynamic c
 def readlines(file_path)
 	file_data = File.open(file_path,"rb:utf-16le"){ |file| file.readlines }
 
+
 	begin
 	  # Try reading with UTF-16LE encoding and handle BOM
 	  file_data = File.open(file_path, "rb:UTF-16LE:UTF-8") do |file|
@@ -176,7 +177,7 @@ p "parsing sets"
 encoding = gen == 6 ? "utf-16le" : "utf-8"
 
 
-trainers = readlines("Battles.txt")
+trainers = File.readlines("Battles.txt").map {|line| line.gsub("\r\n", "")}
 sets = {}
 current_trainer = nil
 
