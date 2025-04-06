@@ -26,13 +26,15 @@ Battles.txt from trainer editor
 Do not change any file names
 
 ### Step 5: 
-Navigate to the folder containing pk3ds in terminal/command line 
+Navigate to the folder containing your exported txt files in terminal/command line 
 
 create a new empty folder titled `output`
 
 run `ruby parse.rb GEN` 
 
 GEN is either `6` or `7`
+
+For example `ruby parse.rb 7`
 
 
 ### Step 6: 
