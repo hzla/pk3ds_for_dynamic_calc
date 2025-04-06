@@ -26,7 +26,7 @@ Battles.txt from trainer editor
 Do not change any file names
 
 ### Step 5: 
-Navigate to the folder containing your exported txt files in terminal/command line 
+Navigate to the folder containing your exported txt files in terminal/command line. Make sure parse.rb is also in this folder
 
 create a new empty folder titled `output`
 
